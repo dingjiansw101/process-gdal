@@ -37,6 +37,17 @@ def parge_geotiff(filename):
     resolution = abs(geotransform[1])
     origin = (geotransform[0], geotransform[3])
     return resolution, origin, dataset.RasterXSize, dataset.RasterYSize
+
+def fromtifgetextent(filename):
+    dataset = gdal.Open(filename, gdal.GA_ReadOnly)
+    width, height = dataset.RasterXSize, dataset.RasterYSize
+    geotransform = dataset.GetGeoTransform()
+    xmin, ymin = geotransform[0], geotransform[3]
+    xmax = xmin + width * geotransform[1]
+    ymax = ymin + height * geotransform[5]
+    extent = (xmin, ymin, xmax, ymax)
+    return extent
+
 if __name__ == '__main__':
     # basepath = r'E:\GoogleEarth\up-9-25-data\SecondQuality\leiyaxian\all'
     # geotiffpath = os.path.join(basepath, 'images')
@@ -48,5 +59,5 @@ if __name__ == '__main__':
     #     f_out = codecs.open(outname, 'w', 'utf_16')
     #     f_out.write(str(resolution) + '\n')
     #filename = r'G:\LocaSpaceViewer\LocaSpaceViewer\download\TaskIMG12150910\TaskIMG12150910.ltsk'
-    filename = r'G:\LocaSpaceViewer\LocaSpaceViewer\download\TaskIMG12141659\Export16-59-27.tif'
+    filename = r'/home/dingjian/Pictures/airport2/Export00-00-09.tif'
     parge_geotiff(filename)
